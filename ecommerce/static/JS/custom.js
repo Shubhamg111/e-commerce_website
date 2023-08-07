@@ -45,14 +45,16 @@ $(function() {
       });
       
     })
-    $(document).on('click','.changeQuantity',function (e){
+
+    $('.changeQuantity').click(function (e) { 
       e.preventDefault();
 
       var product_id=$(this).closest('.product_data').find('.prod_id').val();
       var product_qty=$(this).closest('.product_data').find('.qty-input').val();
       var token =$('input[name=csrfmiddlewaretoken]').val();
+
       $.ajax({
-        type : "POST",
+        method : "POST",
         url: "/update-cart",
         data:{
           'product_id':product_id,
@@ -60,22 +62,23 @@ $(function() {
           csrfmiddlewaretoken:token
         },
        
-       success:function(response){
-          alertify.success(response.status)
+      success: function(response){
+          // alertify.success(response.status)
 
         }
       });
       
     })
 
-    $('.delete-cart-item').click(function (e) { 
+
+    $(document).on('click','.delete-cart-item',function (e){
       e.preventDefault();
 
       var product_id=$(this).closest('.product_data').find('.prod_id').val();
       var token =$('input[name=csrfmiddlewaretoken]').val();
 
       $.ajax({
-        type: "Post",
+        method: "POST",
         url: "delete-cart-item",
         data: {
             'product_id':product_id,
@@ -88,6 +91,52 @@ $(function() {
         }
       });
       
+    });
+
+    $(document).on('click','.addtowishlist',function (e) { 
+      e.preventDefault();
+
+      var product_id=$(this).closest('.product_data').find('.prod_id').val();
+      var token =$('input[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+          method: "POST",
+          url: "/add-to-wishlist",
+          data: {
+              'product_id':product_id,
+              csrfmiddlewaretoken:token 
+          },
+         
+          success: function (response) {
+            alertify.success(response.status)
+            
+            
+          }
+        });
+    });
+
+    $(document).on('click','.delete-wishlist-item',function (e) { 
+      e.preventDefault();
+
+      var product_id=$(this).closest('.product_data').find('.prod_id').val();
+      var token =$('input[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+          method: "POST",
+          url: "/delete-wishlist-item",
+          data: {
+              'product_id':product_id,
+              csrfmiddlewaretoken:token 
+          },
+         
+          success: function (response) {
+            alertify.success(response.status)
+            $('.wishdata').load(location.href + " .wishdata")
+
+            
+            
+          }
+        });
     });
 
 

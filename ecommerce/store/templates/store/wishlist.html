@@ -5,22 +5,19 @@
 <div class="py-3 bg-primary">
     <div class="container">
         <a class="text-white" href="{% url 'home' %}"> Home / </a>
-        <a class="text-white" href="{% url 'cart' %}"> Cart / </a>
-
-        
+        <a class="text-white" href="{% url 'wishlist' %}"> Wishlist / </a>
 
     </div>
 </div>
-
 
 <div class="py-5">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="card shadow">
-                    <div class="card-body cartdata">
-                        {% if cart %}
-                            {% for item in cart %}
+                    <div class="card-body wishdata">
+                        {% if wishlist %}
+                            {% for item in wishlist %}
                                 <div class="row product_data">
                                     <div class="col-md-2 my-auto">
                                         <img src="{{ item.product.product_image.url}}" height="70px"
@@ -35,27 +32,17 @@
                                      <div class="col-md-3 my-auto">
                                         <input type="hidden" class="prod_id" value="{{ item.product_id}}">
                                         {% csrf_token %}
-                                        {% if item.product.quantity >= item.product_qty %}
-                                          <label for="Quantity">Quantity</label>
-                                      <div class="input-group text-center mb-3" style="width: 130px;">
-                                        <button class="input-group-text changeQuantity decrement-btn">-</button>
-                                        <input type="text" name="quantity" class="form-control text-center qty-input" value="1">
-                                        <button class="input-group-text changeQuantity increment-btn">+</button>
-                                    </div>
-                                    {% else %}
-                                        <h6>Out of Stock</h6>
-                                    {% endif %}
+                                        <a href="{% url 'productview' item.product.category.slug item.product.slug %}" class="btn btn-primary"><i class="fa fa-eye"></i>View Product</a>
                                 </div>
                                     <div class="col-md-2 my-auto">
-                                        <button class="btn btn-danger delete-cart-item"><i class="fa fa-trash"></i>Remove</button>
+                                        <button class="btn btn-danger delete-wishlist-item"><i class="fa fa-trash"></i>Remove</button>
 
                                     </div>
                                 </div>
                           
                             {% endfor %}
-                            <a href="{% url 'checkout' %}" class="btn btn-outline-success">Checkout</a>
                         {% else %}
-                            <h4 class="text-center">Your Cart is empty.</h4>
+                            <h4 class="text-center">Your Wishlist is empty.</h4>
                         {% endif %}
                     </div>
                 </div>
@@ -63,7 +50,5 @@
     </div>
 </div>
 </div>
-
-
 
 {% endblock content %}
