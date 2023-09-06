@@ -1,0 +1,59 @@
+{% extends 'store/layouts/main.html' %}
+
+
+
+{% block content %}
+
+<!-- start of cart section  -->
+
+
+<div class="container">
+    <div class="row d-flexjustify-content-center">
+        {% for msg in messages %}
+
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div class="alert alert-success" >
+            {{msg}}
+        </div>
+        {% endif %}
+
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="alert alert-danger" >
+            {{msg}}
+        </div>
+        {% endif %}
+
+        {% endfor %}
+       <div class="container">
+        <div class="row d-flexjustify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center">You are being redirect to Esewa,Please wait...</h1>
+                <div style="display: none;">
+                    <form action="https://uat.esewa.com.np/epay/main" method="POST" id="esewa_form">
+                        <input value="{{ total_price }}" name="tAmt" type="hidden">
+                        <input value="100" name="amt" type="hidden">
+                        <input value="0" name="txAmt" type="hidden">
+                        <input value="0" name="psc" type="hidden">
+                        <input value="0" name="pdc" type="hidden">
+                        <input value="EPAYTEST" name="scd" type="hidden">
+                        <input value="ee2c3ca1-696b-4cc5-a6be-2c40d929d453" name="pid" type="hidden">
+
+                        <input value="http://127.0.0.1.8000/esewa_verify" type="hidden" name="su">
+                        <input value="{{ request.build_absolute_uri }}" type="hidden" name="fu">
+                        <input value="Submit" type="submit">
+                        </form>
+                </div>
+
+            </div>
+        </div>
+       </div>
+    </div>
+
+</div>
+<script>
+    setTimeout(function(){
+        document.getElementById('esewa_form').submit()
+    },1000)
+</script>
+
+{% endblock content %}

@@ -11,104 +11,219 @@
 </div>
 
 <div class="container mt-3">
-    <div class="row">
-        <div class="col-md-7">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h6>Basic Details</h6>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">Firstname</label>
-                            <input type="text" class="form-control" placeholder="Enter Firstname">
+    <form action="{% url 'placeorder' %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card shadow checkoutform">
+                    <div class="card-body">
+                        <h6>Basic Details</h6>
+                        <hr>
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <label for="fname">Firstname</label>
+                                <input type="text" class="form-control" name="fname" placeholder="Enter Firstname"
+                                    required value="{{ request.user.first_name }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lname">Lastname</label>
+                                <input type="text" class="form-control" name="lname" placeholder="Enter Lastname"
+                                    required value="{{ request.user.last_name }}">
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="">Lastname</label>
-                            <input type="text" class="form-control" placeholder="Enter Lastname">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" placeholder="Enter Email" required
+                                    value="{{ request.user.email }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone">Phone</label>
+                                <input type="tel" class="form-control" name="phone" placeholder="Enter Phone Number"
+                                    required value="{{ userprofile.phone }}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" placeholder="Enter Email">
+                        <div class="row">
+                            <div class="">
+                                <label for="address">Address</label>
+                                <textarea class="form-control" name="address" placeholder="Enter your address" required
+                                    value="{{ userprofile.address }}"> </textarea>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="">Phone</label>
-                            <input type="tel" class="form-control" placeholder="Enter Phone Number">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" name="city" placeholder="Enter city" required
+                                    value="{{ userprofile.city }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" name="state" placeholder="Enter State" required
+                                    value="{{ userprofile.state }}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="">
-                            <label for="">Address</label>
-                            <textarea class="form-control" placeholder="Enter your address"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">City</label>
-                            <input type="text" class="form-control" placeholder="Enter city">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">State</label>
-                            <input type="text" class="form-control" placeholder="Enter State">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">Country</label>
-                            <input type="text" class="form-control" placeholder="Enter Country">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">Pin Code</label>
-                            <input type="text" class="form-control" placeholder="Enter Pin Code">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <input type="text" class="form-control" name="country" placeholder="Enter Country"
+                                    required value="{{ userprofile.country }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pincode">Pin Code</label>
+                                <input type="text" class="form-control" name="pincode" placeholder="Enter Pin Code"
+                                    required value="{{ userprofile.pincode }}">
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h6>Order Summary</h6>
+                        <hr>
+                        {% if cartitems %}
+                        <table class="table table-stripeds table-bordereds">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Qty.</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cartitems %}
+                                <tr>
+                                    <td>
+                                        <img src="{{item.product.product_image.url}}" height="50px" class="me-2"
+                                            width="50px" alt="">{{ item.product.name}}
+                                    </td>
+                                    <td>{{item.product_qty}}
+                                    </td>
+                                    <td>{{item.product.selling_price | stringformat:'d'}}</td>
+                                </tr>
 
-        </div>
-        <div class="col-md-5">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h6>Order Summary</h6>
-                    <hr>
-                    {% if cartitems %}
-                      <table class="table table-stripeds table-bordereds">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Qty.</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in cartitems  %}
-                            <tr>
-                                <td>
-                                    <img src="{{item.product.product_image.url}}" height="50px" class="me-2" width="50px" alt="">{{ item.product.name}}</td>
-                                <td>{{item.product_qty}}
-                                </td>
-                                <td>{{item.product.selling_price | stringformat:'d'}}</td>
-                            </tr>
-                              
-                            {% endfor %}
+                                {% endfor %}
 
-                        </tbody>
-                      </table>
-                      <h6 class="fw-bold"> Grand Total
-                        <span class="float-end">Rs. {{total_price | stringformat:'d'}}</span>
-                      </h6>
-                      <div class="mt-3">
-                        <a href="#" class="btn btn-success w-100"> Place Order</a>
-                      </div>
-                    {% else %}
-                    <h4>Your cart is empty</h4>
-                    {% endif %}
+                            </tbody>
+                        </table>
+                        <h6 class="fw-bold"> Grand Total
+                            <span class="float-end">Rs. {{total_price | stringformat:'d'}}</span>
+                        </h6>
+                        <input type="hidden" value="COD" name="payment_mode">
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-success w-100"> COD | Place Order</button>
+
+
+
+                            <div id="paypal-button-container" class="mt-2"></div>
+                        </div>
+                        {% else %}
+                        <h4>Your cart is empty</h4>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 
 {% endblock content %}
+
+{% block scripts %}
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AT9fI03qfyuLPda5MORp4mbk4PMoLJapZEHLtYkqQbWzAju0292bTavbDAchuMXRADEsQF1dBRDM8Y0b&currency=USD">
+</script>
+
+<script>
+    paypal.Buttons({
+        onclick: function (data, actions) {
+
+            //My validation here
+            var fname = $("[name='fname']").val();
+            var lname = $("[name='lname']").val();
+            var email = $("[name='email']").val();
+            var phone = $("[name='phone']").val();
+            var address = $("[name='address']").val();
+            var city = $("[name='city']").val();
+            var state = $("[name='state']").val();
+            var country = $("[name='country']").val();
+            var pincode = $("[name='pincode']").val();
+            var token = $("[name='csrfmiddlewaretoken']").val();
+
+            if (fname == "" || lname== "" || email== "" || phone== "" || address=="" || city== "" || state== "" || country== "" || pincode== "" ) {
+                alert("Alert!", "All the fields are mandatory!", "error");
+                return false;
+            }
+            else {
+                return true;
+            }
+        },
+
+        // Setup the transaction when a payment button is clicked
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '0.01'//'{{ total_price }}'
+                    }
+                }]
+            });
+
+        },
+        // Finalize the transaction after paypal approval
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (orderData) {
+                // Successfull capture!
+                // console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                // alert(orderData.id)
+                // var transaction = orderData.purchase_units[0].payments.capture[0];
+                // alert('Transaction' + transaction.status + ':' + transaction.id + '\n\nSee console for all available details');
+                var fname = $("[name='fname']").val();
+                var lname = $("[name='lname']").val();
+                var email = $("[name='email']").val();
+                var phone = $("[name='phone']").val();
+                var address = $("[name='address']").val();
+                var city = $("[name='city']").val();
+                var state = $("[name='state']").val();
+                var country = $("[name='country']").val();
+                var pincode = $("[name='pincode']").val();
+                var token = $("[name='csrfmiddlewaretoken']").val();
+
+                data={
+                    "fname":fname,
+                    "lname":lname,
+                    "email":email,
+                    "phone":phone,
+                    "address":address,
+                    "city":city,
+                    "state":state,
+                    "country":country,
+                    "pincode":pincode,
+                    "Payment_mode":"Paid by Paypal",
+                    "payment_id":orderData.id,
+                    csrfmiddlewaretoken:token,
+                }
+
+                $.ajax({
+                    method:"POST",
+                    url:"/place-order",
+                    data:data,
+                    success:function(responsec){
+                        alert("Congrates!",responsec.status,"success").then((value) => {
+                            window.location.href='/my-order'
+                        });
+                    }
+                });
+
+            });
+        }
+
+    }).render("#paypal-button-container");
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+{% endblock scripts %}
