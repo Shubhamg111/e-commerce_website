@@ -19,10 +19,11 @@ urlpatterns=[
     path('delete-wishlist-item',wishlist.deletewishlistitem,name="deletewishlistitem"),
     path('checkout',checkout.index, name="checkout"),
     path('place-order',checkout.placeorder, name="placeorder"),
-    path('my-order',order.index, name="myorders"),
+    path('orders',order.index, name="orders"),
     path('view-order/<str:t_no>',order.vieworder, name="orderview"),
     path('product-list',views.productlistajax),
     path('searchproducts',views.searchproducts,name="searchproducts"),
+    # path('esewa_verify',checkout.esewa_verify,name="esewaverify")
   
 
 

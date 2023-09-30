@@ -111,12 +111,14 @@
                         <h6 class="fw-bold"> Grand Total
                             <span class="float-end">Rs. {{total_price | stringformat:'d'}}</span>
                         </h6>
-                        <input type="hidden" value="COD" name="payment_mode">
-                       
-                            <button type="submit" class="btn btn-danger w-100"> COD | Place Order</button>
-                     
-                       
-                            <div id="paypal-button-container" class="mt-2"></div>
+                            
+                            <input type="radio" value="COD" id='COD' name="payment_mode">
+                            <button type="submit" class="btn btn-danger w-100"> Cash On Delivery</button>
+                           
+                            <input type="radio" value="Esewa" id='Esewa' name="payment_mode">
+                            <button type="submit" class="btn btn-success w-100 my-2"> Esewa</button>
+                        
+                        
                         
                         {% else %}
                         <h4>Your cart is empty</h4>

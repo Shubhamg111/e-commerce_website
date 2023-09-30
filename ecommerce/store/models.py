@@ -84,6 +84,7 @@ class Order(models.Model):
     total_price= models.FloatField(null=False)
     payment_mode= models.CharField(max_length=150,null=False)
     payment_id= models.CharField(max_length=250,null=False)
+    payment_status=models.BooleanField(default=False,null=True)
     orderstatuses={
         ("Pending",'Pending'),
         ('Out for shipping','Out for shipping'),
