@@ -28,9 +28,10 @@
                             <div class="category-image">
                                 <img src="{{item.product_image.url }}" alt="Product Image" class="w-100" height="200px">
                             </div>
-                            <h4 class="text-center">{{ item.name }}</h4>
-                            <span class="float-start">{{ item.original_price | stringformat:'d'}}</span>
-                            <span class="float-end">{{ item.selling_price | stringformat:'d'}}</span>
+                            <h4 class="text-center">{{ item.name | slice:":20"  }}</h4>
+                            <span class="float-start opacity-50"><s>Rs.{{ item.original_price | stringformat:'d'}}</s></span>
+                            {% comment %} <span class="float-start">{{ item.original_price | stringformat:'d'}}</span> {% endcomment %}
+                            <span class="float-end">Rs.{{ item.selling_price | stringformat:'d'}}</span>
 
                         </div>
                     </a>

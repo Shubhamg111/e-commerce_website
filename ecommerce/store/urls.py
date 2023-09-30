@@ -23,7 +23,7 @@ urlpatterns=[
     path('view-order/<str:t_no>',order.vieworder, name="orderview"),
     path('product-list',views.productlistajax),
     path('searchproducts',views.searchproducts,name="searchproducts"),
-
+  
 
 
 

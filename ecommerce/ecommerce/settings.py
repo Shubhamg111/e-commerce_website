@@ -41,6 +41,16 @@ INSTALLED_APPS = [
     'store',
 ]
 
+# Jazzmin Configuration
+JAZZMIN_SETTINGS = {
+    'site_title': 'Your Admin Site',
+    'site_header': 'Your Admin Site Header',
+    'welcome_sign': 'Welcome to Your Admin Site',
+    'search_model': 'store.Product', 
+    'show_sidebar': True,
+    'related_modal_active': False,
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -20,6 +20,9 @@
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
@@ -31,6 +34,7 @@
     }
     a{
         text-decoration: none;
+        color:#000;
     }
     .product-viewtag{
         background-color: red;
@@ -55,6 +59,7 @@
     {% include 'store/includes/navbar.html' %}
     {% block content %}
     {% endblock content %} 
+    {% include 'store/includes/footer.html' %}
 
     <a href="https://wa.me/+9779829590999?text=I'm%20interested%20in%20your%20product%20for%20sale">
         <img src="{% static "/images/whatsapp.png" %}" alt="whatsapp_logo" width="60px" class="whatsapp-chat" target="_blank">
@@ -68,6 +73,9 @@
 
    {% comment %} custom JS  {% endcomment %}
     <script src="{% static '/JS/custom.js' %}"></script>
+    <script src="{% static '/JS/owl.carousel.min.js' %}"></script>
+
+    
 
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>

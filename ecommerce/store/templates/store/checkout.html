@@ -112,13 +112,12 @@
                             <span class="float-end">Rs. {{total_price | stringformat:'d'}}</span>
                         </h6>
                         <input type="hidden" value="COD" name="payment_mode">
-                        <div class="mt-3">
-                            <button type="submit" class="btn btn-success w-100"> COD | Place Order</button>
-
-
-
+                       
+                            <button type="submit" class="btn btn-danger w-100"> COD | Place Order</button>
+                     
+                       
                             <div id="paypal-button-container" class="mt-2"></div>
-                        </div>
+                        
                         {% else %}
                         <h4>Your cart is empty</h4>
                         {% endif %}
@@ -139,7 +138,7 @@
 
 <script>
     paypal.Buttons({
-        onclick: function (data, actions) {
+        onClick: function (data, actions) {
 
             //My validation here
             var fname = $("[name='fname']").val();
@@ -167,7 +166,7 @@
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: '0.01'//'{{ total_price }}'
+                        value:'{{ total_price }}'
                     }
                 }]
             });
@@ -208,16 +207,16 @@
                 }
 
                 $.ajax({
-                    method:"POST",
-                    url:"/place-order",
-                    data:data,
-                    success:function(responsec){
-                        alert("Congrates!",responsec.status,"success").then((value) => {
-                            window.location.href='/my-order'
-                        });
+                    method: "POST",
+                    url: "/place-order",
+                    data: data,
+                    success: function (responsec) {
+                        var message = "Congratulations! " + responsec.status + " success";
+                        alert(message);
+                        window.location.href = '/my-order';
                     }
                 });
-
+                
             });
         }
 

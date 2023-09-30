@@ -51,25 +51,56 @@ def productview(request,cate_slug, prod_slug):
     return render(request,'store/products/view.html',context)
 
 def productlistajax(request):
+    category= Category.objects.filter(status=0).values_list('name',flat=True)
     products = Product.objects.filter(status=0).values_list('name',flat=True)
+    categorylist=list(category)
     productslist=list(products)
+    
 
-    return JsonResponse(productslist,safe=False)
+    return JsonResponse(productslist,categorylist,safe=False)
 
+
+# def searchproducts(request):
+#     if request.method=='POST':
+#        searchedterm=request.POST.get('productsearch') 
+#        if searchedterm=="":
+#            return redirect(request.META.get('HTTP_REFERER'))
+#        else:
+#            product=Product.objects.filter(name__contains=searchedterm).first()
+#            category= Category.objects.filter(name__contains=searchedterm).first()
+
+
+#            if product:
+#                return redirect('collections/'+product.category.slug+'/'+product.slug)
+#            if category:
+#                return redirect('collections/'+ category.slug)
+#            else:
+#                messages.info(request,"No product matched your search")
+#                return redirect(request.META.get('HTTP_REFERER'))
 
 def searchproducts(request):
-    if request.method=='POST':
-       searchedterm=request.POST.get('productsearch') 
-       if searchedterm=="":
-           return redirect(request.META.get('HTTP_REFERER'))
-       else:
-           product=Product.objects.filter(name__contains=searchedterm).first()
+    if request.method == 'POST':
+        searchedterm = request.POST.get('productsearch')
+        if not searchedterm:
+            return redirect(request.META.get('HTTP_REFERER'))
 
-           if product:
-               return redirect('collections/'+product.category.slug+'/'+product.slug)
-           else:
-               messages.info(request,"No product matched your search")
-               return redirect(request.META.get('HTTP_REFERER'))
+        # products = Product.objects.filter(name__icontains=searchedterm)
+        categories = Category.objects.filter(name__icontains=searchedterm)
+
+        # if products.exists():
+        #     # Handle multiple product matches here if needed.
+        #     # For example, you can list all matching products.
+        #     # Redirecting to the first match for simplicity.
+        #     return redirect('collections/' + products.first().category.slug + '/' + products.first().slug)
+
+        if categories.exists():
+            # Handle multiple category matches here if needed.
+            # For example, you can list all matching categories.
+            # Redirecting to the first match for simplicity.
+            return redirect('collections/' + categories.first().slug)
+
+        messages.info(request, "No product or category matched your search")
+        return redirect(request.META.get('HTTP_REFERER'))
                
 
     return redirect(request.META.get('HTTP_REFERER'))

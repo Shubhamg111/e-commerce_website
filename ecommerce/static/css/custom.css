@@ -17,3 +17,7 @@
     width: 40% !important;
     margin-left:10% ;
 }
+.image label{
+    margin-left: 10px;
+    background: #000;
+}

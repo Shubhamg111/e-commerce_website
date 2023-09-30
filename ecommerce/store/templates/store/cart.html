@@ -21,12 +21,12 @@
                     <div class="card-body cartdata">
                         {% if cart %}
                             {% for item in cart %}
-                                <div class="row product_data">
-                                    <div class="col-md-2 my-auto">
+                                <div class="row product_data py-2">
+                                    <div class="col-md-2 my-auto ">
                                         <img src="{{ item.product.product_image.url}}" height="70px"
                                         width="70px" alt="Image">
                                     </div>
-                                    <div class="col-md-3 my-auto">
+                                    <div class="col-md-3 my-auto ">
                                        <h6>{{ item.product.name}}</h6>
                                     </div>
                                     <div class="col-md-2 my-auto">
@@ -37,11 +37,7 @@
                                         {% csrf_token %}
                                         {% if item.product.quantity >= item.product_qty %}
                                           <label for="Quantity">Quantity</label>
-                                      <!-- <div class="input-group text-center mb-3" style="width: 130px;">
-                                        <button class="input-group-text changeQuantity decrement-btn">-</button>
-                                        <input type="text" name="quantity" class="form-control text-center qty-input" value="1">
-                                        <button class="input-group-text changeQuantity increment-btn">+</button>
-                                    </div> -->
+                                      
                                     <div class="col-md-2 my-auto">
                                         <h6>{{ item.product_qty }}</h6>
                                      </div>
@@ -54,7 +50,7 @@
 
                                     </div>
                                 </div>
-                          
+                          <hr>
                             {% endfor %}
                             <a href="{% url 'checkout' %}" class="btn btn-outline-success float-end">Checkout</a>
                         {% else %}

@@ -1,10 +1,8 @@
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import render,redirect
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import requests
 from store.models import Cart,Order,Product,OrderItem,Profile
 from django.contrib.auth.models import User
 import random
@@ -67,7 +65,6 @@ def placeorder(request):
         neworder.state= request.POST.get('state')
         neworder.country= request.POST.get('country')
         neworder.pincode= request.POST.get('pincode')
-
         neworder.payment_mode= request.POST.get('payment_mode')
 
         cart=Cart.objects.filter(user=request.user)
@@ -103,19 +100,17 @@ def placeorder(request):
 
             paymode=request.POST.get('payment_mode')
             if (paymode=="Paid by Paypal"):
-                return JsonResponse({'status':"Your order has been placed successfully"})
+                return JsonResponse({'status':"Your order has been placed successfully"}
+                
+            )
+         
             else:
                 messages.success(request,"Your order has been placed successfully")
-        return redirect('/')
+            return redirect('/')
             
-
-
-
-
     return redirect('/')
 
 
 def orders(request):
     return HttpResponse(" My orders page")
 
-    

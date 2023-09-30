@@ -18,7 +18,7 @@
                     <div class="card-body wishdata">
                         {% if wishlist %}
                             {% for item in wishlist %}
-                                <div class="row product_data">
+                                <div class="row product_data py-2">
                                     <div class="col-md-2 my-auto">
                                         <img src="{{ item.product.product_image.url}}" height="70px"
                                         width="70px" alt="Image">
@@ -39,7 +39,7 @@
 
                                     </div>
                                 </div>
-                          
+                          <hr>
                             {% endfor %}
                         {% else %}
                             <h4 class="text-center">Your Wishlist is empty.</h4>
