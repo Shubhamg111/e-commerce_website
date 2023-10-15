@@ -47,7 +47,7 @@
                             <div class="">
                                 <label for="address">Address</label>
                                 <textarea class="form-control" name="address" placeholder="Enter your address" required
-                                    value="{{ userprofile.address }}"> </textarea>
+                                    value="{{ user.request.address }}"> </textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -111,13 +111,14 @@
                         <h6 class="fw-bold"> Grand Total
                             <span class="float-end">Rs. {{total_price | stringformat:'d'}}</span>
                         </h6>
-                            
+                            <div class="d-flex">
                             <input type="radio" value="COD" id='COD' name="payment_mode">
                             <button type="submit" class="btn btn-danger w-100"> Cash On Delivery</button>
-                           
+                        </div>
+                           <div class="d-flex ">
                             <input type="radio" value="Esewa" id='Esewa' name="payment_mode">
                             <button type="submit" class="btn btn-success w-100 my-2"> Esewa</button>
-                        
+                        </div>
                         
                         
                         {% else %}

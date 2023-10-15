@@ -89,21 +89,26 @@ def placeorder(request):
         neworder.tracking_no = trackno
 
         neworder.save()
-
-        # Create order items and update product quantities
         for item in cart:
-            order_item = OrderItem.objects.create(
+                order_item = OrderItem.objects.create(
                 order=neworder,
                 product=item.product,
                 price=item.product.selling_price,
                 quantity=item.product_qty,
             )
+   
 
-       
+        cartitems =Cart.objects.filter(user=request.user)
+        total_price=0
+        for item in cartitems:
+            total_price= total_price + item.product.selling_price * item.product_qty
+
         # Get the selected payment method from the form data
         payment_mode = request.POST.get('payment_mode')
 
         if payment_mode == 'COD':
+                 # Create order items and update product quantities
+            
             # Handle COD payment method
                  # Decrease product quantity from available stock
             orderproduct = Product.objects.filter(id=item.product_id).first()
@@ -116,11 +121,22 @@ def placeorder(request):
             messages.success(request, "Cash on Delivery selected. Order placed!")
             return redirect('/')  # Display a confirmation message on the same page
         elif payment_mode == 'Esewa':
+            context={
+                'order':neworder,
+                'total_price':total_price,
+                'cartitems':cartitems
+            }
+   # Handle COD payment method
+                 # Decrease product quantity from available stock
+            orderproduct = Product.objects.filter(id=item.product_id).first()
+            orderproduct.quantity -= item.product_qty
+            orderproduct.save()
 
-
+            # Clear the user's cart
+            cart.delete()
             # Handle Esewa payment method
             # You can pass any additional context data needed for the Esewa payment page
-            return render(request, 'store/esewapayment.html')
+            return render(request, 'store/esewapayment.html',context)
         else:
             messages.error(request, "Something Went Wrong")
             return redirect('checkout')
@@ -132,35 +148,85 @@ def placeorder(request):
 
 
 # import requests as req
-# def esewa_verify(request):
-#     import xml.etree.ElementTree as ET
-#     prod_id=request.GET.get('prod_id')
-#     amounts=request.GET.get('amt')
-#     refId=request.GET.get(refId)
-#     url="https://uat.esewa.com.np/epay/main"
-#     d={
-#         'amt':amounts,
-#         'scd':'EPAYTEST',
-#         'rid': refId,
-#         'pid':prod_id
+# import xml.etree.ElementTree as ET
 
+#  # Import your Order and Cart models here
+
+# def esewa_verify(request):
+#     o_id = request.GET.get('o_id')
+#     amounts = request.GET.get('amt')
+#     refId = request.GET.get('refId')  # Corrected variable name
+#     url = "https://uat.esewa.com.np/epay/main"
+
+#     data = {
+#         'amt': amounts,
+#         'scd': 'EPAYTEST',
+#         'rid': refId,
+#         'pid': o_id
 #     }
-#     resp= req.post(url,d)
-#     root=ET.fromstring(resp.content)
-#     status=root[0].text.strip()
-#     if status=='Success':
-#         order_id=prod_id.split('_')[0]
-#         order=Order.objects.get(id=order_id)
-#         order.payment_status=True
-#         order.save()
-#         cart_id=prod_id.split('_')[1]
-#         cart=Cart.objects.get(id=cart_id)
-#         cart.delete()
-#         messages.add_message(request,messages.SUCCESS,'order success')
-#         return redirect('orders')
-#     else:
-#         messages.add_message(request,messages.ERROR,'Failed to order')
+
+#     try:
+#         resp = req.post(url, data)
+#         print("status code=======", resp.status_code)
+
+#         if resp.status_code == 200:
+#             # Split the order_id and cart_id from the o_id
+#             order_id, cart_id = o_id.split('_')
+
+#             # Update the order's payment status
+#             order = Order.objects.get(id=order_id)
+#             order.payment_status = True
+#             order.save()
+
+#             # Delete the cart
+#             cart = Cart.objects.get(id=cart_id)
+#             cart.delete()
+
+#             messages.add_message(request, messages.SUCCESS, 'Order success')
+#             return redirect('orders')
+#         else:
+#             messages.add_message(request, messages.ERROR, 'Failed to order')
+#             return redirect('/')
+#     except Exception as e:
+#         # Handle exceptions (e.g., network errors) here
+#         messages.add_message(request, messages.ERROR, 'Failed to process payment')
 #         return redirect('/')
+
+#!/usr/bin/python3
+import requests as req
+import xml.etree.ElementTree as ET
+
+def esewa_verify(request):
+    o_id = request.GET.get('o_id')
+    amounts = request.GET.get('amt')
+    refId = request.GET.get('refId')
+    url ="https://uat.esewa.com.np/epay/transrec"
+    d = {
+        'amt': amounts,
+        'scd': 'EPAYTEST',
+        'rid': refId,
+        'pid': o_id
+    }
+    resp = req.post(url, d)
+    print("status code=======", resp.status_code)
+
+    if resp.status_code =='Success':
+           # Split the order_id and cart_id from the o_id
+            order_id, cart_id = o_id.split('_')
+
+            # Update the order's payment status
+            order = Order.objects.get(id=order_id)
+            order.payment_status = True
+            order.save()
+
+            # Delete the cart
+            cart = Cart.objects.get(id=cart_id)
+            cart.delete()
+            messages.add_message(request, messages.SUCCESS, 'Order success')
+            return redirect('orders')
+    else:
+            messages.add_message(request, messages.ERROR, 'Order Success')
+            return redirect('/')
     
-# def orders(request):
-#     return render(request, 'store/orders/index.html')
+def orders(request):
+    return render(request, 'store/orders/index.html')

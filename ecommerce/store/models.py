@@ -112,7 +112,7 @@ class OrderItem(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     phone=models.CharField(max_length=50,null=False)
-    address=models.CharField(max_length=50,null=False)
+    address=models.CharField(max_length=200,null=False)
     city=models.CharField(max_length=50,null=False)
     state=models.CharField(max_length=50,null=False)
     country=models.CharField(max_length=50,null=False)

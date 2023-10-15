@@ -52,12 +52,12 @@ def productview(request,cate_slug, prod_slug):
 
 def productlistajax(request):
     category= Category.objects.filter(status=0).values_list('name',flat=True)
-    products = Product.objects.filter(status=0).values_list('name',flat=True)
+    # products = Product.objects.filter(status=0).values_list('name',flat=True)
     categorylist=list(category)
-    productslist=list(products)
+    # productslist=list(products)
     
 
-    return JsonResponse(productslist,categorylist,safe=False)
+    return JsonResponse(categorylist,safe=False)
 
 
 # def searchproducts(request):

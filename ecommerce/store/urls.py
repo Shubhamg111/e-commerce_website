@@ -23,7 +23,8 @@ urlpatterns=[
     path('view-order/<str:t_no>',order.vieworder, name="orderview"),
     path('product-list',views.productlistajax),
     path('searchproducts',views.searchproducts,name="searchproducts"),
-    # path('esewa_verify',checkout.esewa_verify,name="esewaverify")
+
+    path('esewa_verify',checkout.esewa_verify,name="esewaverify")
   
 
 
