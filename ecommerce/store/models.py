@@ -56,6 +56,8 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.product.name + " - Image"
+    
+
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -99,6 +101,8 @@ class Order(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.id,self.tracking_no)
     
+
+    
 class OrderItem(models.Model):
     order=models.ForeignKey(Order, on_delete=models.CASCADE)
     product=models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -107,6 +111,8 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.order.id,self.order.tracking_no)
+    
+    
 
 
 class Profile(models.Model):

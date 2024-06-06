@@ -1,10 +1,9 @@
 from django.shortcuts import render,redirect
-import requests
 from .models import *
 from django.http.response import JsonResponse
-
 from django.contrib import messages
 # Create your views here.
+
 
 def home(request):
     trending_products=Product.objects.filter(trending=1)
@@ -13,12 +12,14 @@ def home(request):
     }
     return render(request,'store/index.html',context)
 
+
 def collections(request):
     category =Category.objects.filter(status=0)
     context ={
         'category':category
         }
     return render(request,'store/collections.html',context)
+
 
 def collectionsview(request, slug):
     if(Category.objects.filter(slug=slug, status=0)):
